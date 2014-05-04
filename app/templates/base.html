@@ -1,0 +1,57 @@
+<html>
+  <head>
+    {% if title %}
+    <title>{{title}} - sourced</title>
+    {% else %}
+    <title>sourced</title>
+    {% endif %}
+  </head>
+  <body>
+    <!-- Top menu -->
+    <div>
+        sourced (logo):
+        <!-- Logo -->
+
+        {% if g.user.is_authenticated() %}
+        <form action="{{url_for('index')}}" method="post" name="post">
+        | Say something: {{ post_form.post(size = 30, maxlength = 140) }} <input type="submit" value="Post!">
+        </form>
+        {% else %}
+        | <a href="{{ url_for('register') }}">Register</a>
+        | <a href="{{ url_for('login') }}">Login</a>
+        {% endif %}
+
+    </div>
+
+    <hr>
+
+    <!-- Sidebar -->
+    {% if g.user.is_authenticated() %}
+    <div>
+        Sidebar:
+        | <a href="{{ url_for('show_user_profile', userint = g.user.id) }}">{{user.name}}</a>
+        <!-- Groups -->
+        <!-- List of groups -->
+        <!-- new group? -->
+        | <a href="{{ url_for('index') }}">Home</a>
+        | <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+    <hr>
+    {% endif %}
+
+
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+    {% for message in messages %}
+        <li>{{ message }} </li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+
+
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </body>
+</html>
