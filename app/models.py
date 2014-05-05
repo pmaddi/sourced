@@ -6,6 +6,9 @@ from datetime import datetime
 ROLE_USER = 0
 ROLE_ADMIN = 1
 
+SUB_GROUP = 0
+MAIN_GROUP = 1
+
 groups = db.Table('groups',
 	db.Column('group_id', db.Integer, db.ForeignKey('group.id')),
 	db.Column('user_id', db.Integer, db.ForeignKey('user.id'))
@@ -64,13 +67,9 @@ class User(db.Model):
 
 class Group(db.Model):
 	id = db.Column(db.Integer, primary_key = True)
+	group_type = db.Column(db.SmallInteger, default = SUB_GROUP)
 	name = db.Column(db.String(64), unique = True)
-	# user = db.relationship('User', 
-	# 	 secondary = groups, 
-	# 	 # primaryjoin = (groups.c.user_id == id), 
-	# 	 # secondaryjoin = (groups.c.group_id == id), 
-	# 	 backref = db.backref('groups', lazy = 'dynamic'), 
-	# 	 lazy = 'dynamic')
+	
 	def members(self):
 		return User.query.join(groups, (groups.c.user_id == User.id)).filter(groups.c.group_id == self.id).all()
 	def posts(self):

@@ -70,6 +70,11 @@
                     {% for group in groups %}
                         <li ><a href="{{ url_for('show_group_profile', groupint = group.id) }}">{{group.name}}</a></li>
                     {% endfor %}
+                    <li>
+                        <form class="form " action="{{url_for('show_all_groups')}}" method="post" name="post">
+                            {{ new_group_form.new_group(size = 30, class="form-control", maxlength = 140, placeholder = "new") }}
+                        </form>
+                    </li>
                     <li><a href="{{ url_for('index') }}">Home</a></li>
                     <li><a href="{{ url_for('logout') }}">Logout</a></li>
                   </ul>

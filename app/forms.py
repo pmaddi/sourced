@@ -21,3 +21,6 @@ class EditForm(Form):
 
 class PostForm(Form):
     post = TextField('post', validators = [validators.Required()])
+
+class GroupForm(Form):
+    new_group = TextField('New Group', validators = [validators.Required()])

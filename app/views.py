@@ -1,7 +1,7 @@
 from flask import render_template, flash, redirect, session, url_for, request, g
 from flask.ext.login import login_user, logout_user, current_user, login_required
 from app import app, db, lm
-from forms import LoginForm, RegistrationForm, EditForm, PostForm
+from forms import LoginForm, RegistrationForm, EditForm, PostForm, GroupForm
 from models import Post, User, ROLE_USER, ROLE_ADMIN, Group
 import hashlib
 from datetime import datetime
@@ -52,8 +52,9 @@ def retrieveImage(url):
 def render_template_after_auth(tmpl_name, **kwargs):
 	if g.user.is_authenticated():
 		post_form = PostForm()
+		new_group_form = GroupForm()
 		groups = g.user.groups.all() 
-		return render_template(tmpl_name, groups=groups, post_form=post_form, **kwargs)
+		return render_template(tmpl_name, groups=groups, new_group_form=new_group_form, post_form=post_form, **kwargs)
 	return render_template(tmpl_name, **kwargs)
 
 @lm.user_loader
@@ -122,13 +123,16 @@ def register():
 	form = RegistrationForm()
 	if request.method == 'POST' and form.validate():
 		if User.query.filter(User.email == form.email.data).first() is not None:
-		    flash('Account exists for this email')
-		    return redirect(url_for('login'))
+			flash('Account exists for this email')
+			return redirect(url_for('login'))
 		user = User(name=form.name.data, email=form.email.data)
 		user.hash_password(form.password.data)
 		db.session.add(user)
 		# session['remember_me'] = form.remember_me.data
 		db.session.commit()
+		user.join_group(Group.query.get(1))
+		db.session.commit()
+
 		flash('Thanks for registering')
 		return redirect(url_for('login'))
 	return render_template('register.html', form=form)
@@ -161,10 +165,22 @@ def show_group_profile(groupint):
 		users = users,
 		posts = posts)
 
-@app.route('/groups')
+@app.route('/groups', methods = ['GET','POST'])
 @login_required
 def show_all_groups():
 	allgroups = Group.query.all()
+	if request.method == 'POST':
+		group_name = request.form.get('new_group')
+		if Group.query.filter(Group.name == group_name).first() is not None:
+			flash('Group exists')
+			return redirect(url_for('show_group_profile', Group.query.filter(Group.name == group_name).first().id ))
+		new_group = Group(name=group_name)
+		db.session.add(new_group)
+		db.session.commit()
+		g.user.join_group(new_group)
+		db.session.commit()
+		flash('Group created')
+		return redirect(url_for('show_group_profile', groupint=new_group.id))
 	return render_template_after_auth('groups.html',
 		# user = g.user,
 		allgroups = allgroups)

@@ -57,8 +57,9 @@ db.session.add(p1)
 
 
 
-g1 = Group(name="Yale")
-g2 = Group(name="Harvard")
+g1 = Group(name="Medtronic",group_type=MAIN_GROUP)
+g2 = Group(name="Corporate Finance")
+
 # print g1
 db.session.add(g1)
 db.session.add(g2)
@@ -67,7 +68,10 @@ db.session.commit()
 
 
 u1.join_group(g1)
+u1.join_group(g2)
+
 u2.join_group(g1)
+u3.join_group(g1)
 
 db.session.commit()
 
