@@ -121,6 +121,9 @@ def register():
 		return redirect(url_for('index'))
 	form = RegistrationForm()
 	if request.method == 'POST' and form.validate():
+		if User.query.filter(User.email == form.email.data).first() is not None:
+		    flash('Account exists for this email')
+		    return redirect(url_for('login'))
 		user = User(name=form.name.data, email=form.email.data)
 		user.hash_password(form.password.data)
 		db.session.add(user)
@@ -157,6 +160,14 @@ def show_group_profile(groupint):
 		group = group,
 		users = users,
 		posts = posts)
+
+@app.route('/groups')
+@login_required
+def show_all_groups():
+	allgroups = Group.query.all()
+	return render_template_after_auth('groups.html',
+		# user = g.user,
+		allgroups = allgroups)
 
 @app.route('/edit', methods = ['GET', 'POST'])
 @login_required

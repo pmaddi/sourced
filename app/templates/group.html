@@ -8,19 +8,23 @@
 {% if user.about_me %}<p>{{user.about_me}}</p>{% endif %}
 {% if user.id == g.user.id %}<p><a href="{{url_for('edit')}}">Edit</a></p>{% endif %}
 #}
+
 <div class="row">
-    {% for post in posts %}
-        <div class="col-xs-6 col-md-4">
-            <a href="{{ post.body }}" class="thumbnail">
-                <img src="{{ post.img }}" alt="{{ post.body }}">
-            </a>
-        </div>
-    {% endfor %}
+	<ul class="nav nav-pills">
+	{% for user in users %}
+	  <li><a href="{{ url_for('show_user_profile', userint = user.id) }}">{{user.name}}</a></li>
+	{% endfor %}
+	</ul>
+	<br>
+	{% for post in posts %}
+		<div class="col-xs-6 col-md-4">
+			<a href="{{ post.body }}" class="thumbnail">
+				<img src="{{ post.img }}" alt="{{ post.body }}">
+			</a>
+		</div>
+	{% endfor %}
 </div>
-<button type="button" class="btn btn-default" data-container="body" data-trigger="focus" data-toggle="popover" data-placement="bottom" data-content="Vivamus
-sagittis lacus vel augue laoreet rutrum faucibus.">
-  Popover on bottom
-</button>
+
 
 
 {% endblock %}

@@ -48,7 +48,7 @@
         <div class="navbar-collapse collapse">
             {% if g.user.is_authenticated() %}
             <form class="navbar-form navbar-right" action="{{url_for('index')}}" method="post" name="post">
-                {{ post_form.post(size = 30, class="form-control", maxlength = 140, placeholder = "Say something...") }}
+                {{ post_form.post(size = 30, class="form-control", maxlength = 140, placeholder = "Paste a link") }}
             </form>
             {% else %}
             <ul class="nav navbar-nav navbar-right">
@@ -66,6 +66,7 @@
                 <div class="col-sm-3 col-md-2 sidebar">
                   <ul class="nav nav-sidebar">
                     <li><a href="{{ url_for('show_user_profile', userint = g.user.id) }}">{{g.user.name}}</a></li>
+                    <li ><a href="{{ url_for('show_all_groups') }}">Groups</a></li>
                     {% for group in groups %}
                         <li ><a href="{{ url_for('show_group_profile', groupint = group.id) }}">{{group.name}}</a></li>
                     {% endfor %}
