@@ -23,7 +23,7 @@ class User(db.Model):
 	id = db.Column(db.Integer, primary_key = True)
 	name = db.Column(db.String(64))
 	email = db.Column(db.String(120), index = True, unique = True)
-	password = db.Column(db.String(15), unique = True)
+	password = db.Column(db.String(255), unique = True)
 	role = db.Column(db.SmallInteger, default = ROLE_USER)
 	posts = db.relationship('Post', backref = 'author', lazy = 'dynamic')
 	about_me = db.Column(db.String(140))
