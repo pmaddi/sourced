@@ -12,7 +12,7 @@
     <input type="checkbox" value="remember-me"> Remember me
   </label>
   {% for error in form.errors %}
-  <span style="color: red;">{{error}}</span>
+    <div class="alert alert-danger">{{error}}</div>
   {% endfor %}<br>
 
   <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>

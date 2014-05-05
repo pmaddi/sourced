@@ -3,10 +3,10 @@
 
 {% block content %}
 
-
 <h1>User: {{user.name}}!</h1>
 {% if user.about_me %}<p>{{user.about_me}}</p>{% endif %}
 {% if user.id == g.user.id %}<p><a href="{{url_for('edit')}}">Edit</a></p>{% endif %}
+
 
 
 
@@ -16,6 +16,12 @@
   {{post.author.name}} says: <b>{{post.body}}</b>
 </p>
 
+
 {% endfor %}
+<div id="container" class="js-masonry" data-masonry-options='{ "columnWidth": 400,"itemSelector": ".item" }'>
+	<div class="item">...</div>
+	<div class="item w2">...</div>
+	<div class="item">...</div>
+</div>
 
 {% endblock %}

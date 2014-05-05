@@ -20,6 +20,7 @@
     <!-- Custom styles for this template -->
     <link href="/static/css/dashboard.css" rel="stylesheet">
     <link href="/static/css/signin.css" rel="stylesheet">
+    <link href="/static/css/site.css" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy this line! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -42,7 +43,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Project name</a>
+          <a class="navbar-brand" href="{{ url_for('index') }}">sourced</a>
         </div>
         <div class="navbar-collapse collapse">
             {% if g.user.is_authenticated() %}
@@ -80,11 +81,11 @@
 
             {% with messages = get_flashed_messages() %}
             {% if messages %}
-            <ul>
             {% for message in messages %}
-                <li>{{ message }} </li>
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
             {% endfor %}
-            </ul>
             {% endif %}
             {% endwith %}
 
@@ -102,7 +103,8 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="static/js/bootstrap.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/masonry.pkgd.min.js"></script>
     <!--<script src="../../assets/js/docs.min.js"></script> -->
   </body>
 </html>
