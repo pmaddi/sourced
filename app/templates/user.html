@@ -7,16 +7,15 @@
 {% if user.about_me %}<p>{{user.about_me}}</p>{% endif %}
 {% if user.id == g.user.id %}<p><a href="{{url_for('edit')}}">Edit</a></p>{% endif %}
 
-{% for post in posts %}
-<p>
-  {{post.author.name}} says: <b>{{post.body}}</b>
-</p>
-
-{% endfor %}
-<div id="container" class="js-masonry" data-masonry-options='{ "columnWidth": 400,"itemSelector": ".item" }'>
-	<div class="item">...</div>
-	<div class="item w2">...</div>
-	<div class="item">...</div>
+<div class="row">
+    {% for post in posts %}
+        <div class="col-xs-6 col-md-4">
+            <a href="{{ post.body }}" class="thumbnail">
+                <img src="{{ post.img }}" alt="{{ post.body }}">
+            </a>
+        </div>
+    {% endfor %}
 </div>
+
 
 {% endblock %}

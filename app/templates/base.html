@@ -65,7 +65,7 @@
             {% if g.user.is_authenticated() %}
                 <div class="col-sm-3 col-md-2 sidebar">
                   <ul class="nav nav-sidebar">
-                    <li><a href="{{ url_for('show_user_profile', userint = g.user.id) }}">{{user.name}}</a></li>
+                    <li><a href="{{ url_for('show_user_profile', userint = g.user.id) }}">{{g.user.name}}</a></li>
                     <li class="active"><a href="#">Groups</a></li>
                     <li><a href="{{ url_for('index') }}">Home</a></li>
                     <li><a href="{{ url_for('logout') }}">Logout</a></li>

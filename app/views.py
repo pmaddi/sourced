@@ -5,7 +5,49 @@ from forms import LoginForm, RegistrationForm, EditForm, PostForm
 from models import Post, User, ROLE_USER, ROLE_ADMIN
 import hashlib
 from datetime import datetime
+import urllib, cStringIO
+from bs4 import BeautifulSoup
 
+def getsize(url):
+	try:
+		file = urllib.urlopen(url)
+		return len(file.read())
+	except:
+		return 0
+
+def addhttp(link, domain):
+	if link is None:
+		return ''
+	if link.startswith('http://') or link.startswith('https://'):
+		return link
+	else:
+		return domain+link
+
+def findLink(url):
+	if not url.startswith('http://'):
+		url = 'http://' + url
+	try:	
+		url = urllib.urlopen(url).geturl()
+	except:
+		return False
+	return url
+
+def retrieveImage(url):
+	if not url.startswith('http://'):
+		url = 'http://' + url
+	try:	
+		html = urllib.urlopen(url).read()
+		url = urllib.urlopen(url).geturl()
+	except:
+		return ''
+	domain = url
+	soup = BeautifulSoup(html)
+	imgs = soup.find_all('img')
+	links = [addhttp(img.get('src'),domain) for img in imgs]
+	sizes = [getsize(link) for link in links]
+	max_value = max(sizes)
+	max_index = sizes.index(max_value)
+	return links[max_index]
 
 def render_template_after_auth(tmpl_name, **kwargs):
 	if g.user.is_authenticated():
@@ -34,10 +76,15 @@ def index():
 	posts = g.user.posts.all()
 	if request.method == 'POST':
 		post_data = request.form.get('post')
-		post = Post(body=post_data, timestamp=datetime.utcnow(), author = g.user)
-		db.session.add(post)
-		db.session.commit()
-		flash('Your post is now live!')
+		link = findLink(post_data)
+		if link is not False:
+			print link
+			post = Post(body=link, timestamp=datetime.utcnow(), author = g.user, img = retrieveImage(post_data))
+			db.session.add(post)
+			db.session.commit()
+			flash('Your post is now live!')
+			return redirect(url_for('index'))
+		flash(post_data+' is invalid')
 		return redirect(url_for('index'))
 	return render_template_after_auth('index.html',
 		title = 'Home',
@@ -66,28 +113,6 @@ def login():
 	return render_template('login.html', 
 		title = 'Sign In',
 		form = form)
-
-# @user.route('/login', methods=['GET', 'POST'])
-# def login():
-#     if g.user is not None and g.user.is_authenticated():
-#         return redirect(url_for('splash.dashboard'))
-#     if request.method == 'GET':
-#         email = request.args.get('defaultEmail')
-#         return render_template('login.html', defaultEmail=email)
-#     email = request.form['email'].lower()
-#     password = request.form['password']
-#     user = User.query.filter(User.email == email).first()
-#     if user is None:
-#         flash('Email is invalid!')
-#         return redirect(url_for('user.login'))
-#     if user.verify_password(password) is False:
-#         flash('Password is invalid!')
-#         return redirect(url_for('user.login'))
-#     if (user.account_approved is False) and (user.company is not None):
-#         return redirect(url_for('user.unvalidated'))
-#     login_user(user)
-#     return redirect(url_for('splash.dashboard'))
-
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():

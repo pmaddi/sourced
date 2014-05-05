@@ -42,10 +42,17 @@ class Post(db.Model):
     body = db.Column(db.String(140))
     timestamp = db.Column(db.DateTime)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    img = db.Column(db.String(300))
 
     def __repr__(self):
         return '<Post %r>' % (self.body)
 
-# class Group(db.Model):
-#     id = db.Column(db.Integer, primary_key = True)
-#         
+# followers = db.Table('followers',
+#     db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
+#     db.Column('followed_id', db.Integer, db.ForeignKey('user.id'))
+# )
+
+class Group(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    name = db.Column(db.String(64))
+        
