@@ -135,4 +135,5 @@ def edit():
 		form.name.data = g.user.name
 		form.about_me.data = g.user.about_me
 	return render_template_after_auth('edit.html',
-		form = form)
+		form = form,
+		user = g.user)

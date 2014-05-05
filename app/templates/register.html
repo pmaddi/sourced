@@ -1,38 +1,23 @@
 <!-- extend base layout -->
 {% extends "base.html" %}
 {% block content %}
-<h1>Register</h1>
-<form action="" method="post" name="login">
+
+
+<form action="" method="post" name="login" class="form-signin" role="form">
     {{form.hidden_tag()}}
-    <p>
-<!--         Please enter your OpenID, or select one of the providers below:<br>
-        {{form.name(size=80)}}
-        {{form.email(size=80)}}
-        {{form.password(size=80)}} -->
+  <h2 class="form-signin-heading">Register</h2>
+  {{ form.email(type="email", class="form-control", placeholder="Email") }}
+  {{ form.name(class="form-control", placeholder="Name") }}
+  {{ form.password(type="password", class="form-control", placeholder="Password") }}
+  <label class="checkbox">
+    <input type="checkbox" value="remember-me"> Remember me
+  </label>
+  {% for error in form.errors %}
+  <span style="color: red;">{{error}}</span>
+  {% endfor %}<br>
 
-        {#{% for field in form %}#}
-            <tr>
-                <th>{{ form.email.label }}</th>
-                <td>{{ form.email }}</td>
-            </tr>
-            <tr>
-                <th>{{ form.name.label }}</th>
-                <td>{{ form.name }}</td>
-            </tr>
-            <tr>
-                <th>{{ form.password.label }}</th>
-                <td>{{ form.password }}</td>
-            </tr>
-
-        {#{% endfor %}#}
-
-        
-        {% for error in form.errors %}
-        
-        <span style="color: red;">[{{error}}]</span>
-        {% endfor %}<br>
-    </p>
-    <p>{{form.remember_me}} Remember Me</p>
-    <p><input type="submit" value="Sign In"></p>
+  <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
 </form>
+
+
 {% endblock %}
