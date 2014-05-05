@@ -25,6 +25,7 @@ flup==1.0.2
 gunicorn==18.0
 itsdangerous==0.24
 passlib==1.6.2
+psycopg2==2.5.2
 python-openid==2.2.5
 pytz==2013b
 speaklater==1.3
