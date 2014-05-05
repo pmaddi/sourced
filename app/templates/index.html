@@ -2,34 +2,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Hi, {{user.name}}!</h1>
+<h1>{{user.name}}</h1>
 
-{#
-    <form action="" method="post" name="post">
-    {{form.hidden_tag()}}
-    <table>
-        <tr>
-            <td>Say something:</td>
-            <td>{{ form.post(size = 30, maxlength = 140) }}</td>
-            <td>
-            {% for error in form.errors.post %}
-            <span style="color: red;">[{{error}}]</span><br>
-            {% endfor %}
-            </td>
-        </tr>
-        <tr>
-            <td></td>
-            <td><input type="submit" value="Post!"></td>
-            <td></td>
-        </tr>
-    </table>
-</form> #} 
-
-
-{% for post in posts %}
-<p>
-  {{post.author.name}} says: <b>{{post.body}}</b>
-</p>
-
-{% endfor %}
+<div class="row">
+    {% for post in posts %}
+  <div class="col-xs-6 col-md-4">
+    <a href="www.google.com" class="thumbnail">
+      <img src="/static/img/default.png" alt="{{post.author.name}} says: {{post.body}}">
+    </a>
+  </div>
+  {% endfor %}
+</div>
 {% endblock %}
