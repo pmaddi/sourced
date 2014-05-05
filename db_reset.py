@@ -10,8 +10,8 @@ db.create_all()
 
 
 
-u1 = User(name="Christian", email="christian@laurence.com")
-u2 = User(name="Hun", email="hun@wong.com")
+u1 = User(name="David", email="david@atenburough.com")
+u2 = User(name="Eric", email="eric@times.com")
 u3 = User(name="Pranav", email="pranav@maddi.com")
 
 u1.hash_password("user1")
@@ -75,13 +75,13 @@ u3.join_group(g1)
 
 db.session.commit()
 
-print "member?" , u1.is_member(g1)
-print "member?" , u1.is_member(g2)
+# print "member?" , u1.is_member(g1)
+# print "member?" , u1.is_member(g2)
 # print u1.groups.all()
 # print Group.query.all()
 
 # print sum([u.posts.all() for u in User.query.join(groups, (groups.c.user_id == User.id)).filter(groups.c.group_id == g1.id).all()],[])
 # print User.query.join(groups, (groups.c.user_id == User.id)).filter(groups.c.group_id == g1.id).first().posts.all()
 
-db.session.commit()
+# db.session.commit()
 
