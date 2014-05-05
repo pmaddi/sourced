@@ -2,7 +2,7 @@ from flask import render_template, flash, redirect, session, url_for, request, g
 from flask.ext.login import login_user, logout_user, current_user, login_required
 from app import app, db, lm
 from forms import LoginForm, RegistrationForm, EditForm, PostForm
-from models import Post, User, ROLE_USER, ROLE_ADMIN
+from models import Post, User, ROLE_USER, ROLE_ADMIN, Group
 import hashlib
 from datetime import datetime
 import urllib, cStringIO
@@ -52,7 +52,8 @@ def retrieveImage(url):
 def render_template_after_auth(tmpl_name, **kwargs):
 	if g.user.is_authenticated():
 		post_form = PostForm()
-		return render_template(tmpl_name, post_form=post_form, **kwargs)
+		groups = g.user.groups.all() 
+		return render_template(tmpl_name, groups=groups, post_form=post_form, **kwargs)
 	return render_template(tmpl_name, **kwargs)
 
 @lm.user_loader
@@ -143,6 +144,18 @@ def show_user_profile(userint):
 	posts = user.posts.all()
 	return render_template_after_auth('user.html',
 		user = user,
+		posts = posts)
+
+@app.route('/group/<int:groupint>')
+@login_required
+def show_group_profile(groupint):
+	group = Group.query.get_or_404(groupint)
+	users = group.members()
+	posts = group.posts()
+	return render_template_after_auth('group.html',
+		# user = g.user,
+		group = group,
+		users = users,
 		posts = posts)
 
 @app.route('/edit', methods = ['GET', 'POST'])
