@@ -1,7 +1,7 @@
 from flask import render_template, flash, redirect, session, url_for, request, g
 from flask.ext.login import login_user, logout_user, current_user, login_required
 from app import app, db, lm
-from forms import LoginForm, RegistrationForm, EditForm, PostForm, GroupForm
+from forms import LoginForm, RegistrationForm, EditForm, PostForm, GroupForm, JoinForm
 from models import Post, User, ROLE_USER, ROLE_ADMIN, Group
 import hashlib
 from datetime import datetime
@@ -153,17 +153,24 @@ def show_user_profile(userint):
 		user = user,
 		posts = posts)
 
-@app.route('/group/<int:groupint>')
+@app.route('/group/<int:groupint>', methods = ['GET', 'POST'])
 @login_required
 def show_group_profile(groupint):
 	group = Group.query.get_or_404(groupint)
 	users = group.members()
 	posts = group.posts()
+	if request.method == 'POST':
+		print "doing"
+		g.user.join_group(group)
+		db.session.commit()
+		flash('Group joined')
+		return redirect(url_for('show_group_profile', groupint=groupint ))
 	return render_template_after_auth('group.html',
 		# user = g.user,
 		group = group,
 		users = users,
-		posts = posts)
+		posts = posts,
+		join_form = JoinForm())
 
 @app.route('/groups', methods = ['GET','POST'])
 @login_required
@@ -173,7 +180,7 @@ def show_all_groups():
 		group_name = request.form.get('new_group')
 		if Group.query.filter(Group.name == group_name).first() is not None:
 			flash('Group exists')
-			return redirect(url_for('show_group_profile', Group.query.filter(Group.name == group_name).first().id ))
+			return redirect(url_for('show_group_profile', groupint = Group.query.filter(Group.name == group_name).first().id ))
 		new_group = Group(name=group_name)
 		db.session.add(new_group)
 		db.session.commit()

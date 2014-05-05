@@ -1,5 +1,5 @@
 from flask.ext.wtf import Form
-from wtforms import TextField, BooleanField, PasswordField, validators, TextAreaField
+from wtforms import TextField, BooleanField, PasswordField, validators, TextAreaField, SubmitField
 
 
 class LoginForm(Form):
@@ -24,3 +24,7 @@ class PostForm(Form):
 
 class GroupForm(Form):
     new_group = TextField('New Group', validators = [validators.Required()])
+
+class JoinForm(Form):
+    join = SubmitField('Join', validators = [validators.Required()])
+

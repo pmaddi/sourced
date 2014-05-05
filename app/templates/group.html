@@ -3,13 +3,20 @@
 
 {% block content %}
 
-<h1>{{group.name}}</h1>
+<h1>{{group.name}}
+	{% if not g.user.is_member(group) %}
+		<form action = "{{url_for('show_group_profile',groupint=group.id)}}" name="join" method = "post">
+			{{ join_form.join(type="button", type="submit", class="btn btn-default", placeholder="Join") }}
+		</form>
+	{% endif %}
+</h1>
 {#
 {% if user.about_me %}<p>{{user.about_me}}</p>{% endif %}
 {% if user.id == g.user.id %}<p><a href="{{url_for('edit')}}">Edit</a></p>{% endif %}
 #}
 
 <div class="row">
+	Members
 	<ul class="nav nav-pills">
 	{% for user in users %}
 	  <li><a href="{{ url_for('show_user_profile', userint = user.id) }}">{{user.name}}</a></li>
