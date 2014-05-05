@@ -75,8 +75,8 @@ u3.join_group(g1)
 
 db.session.commit()
 
-# print "member?" , u1.is_member(g1)
-# print "member?" , u1.is_member(g2)
+print "member?" , u1.is_member(g1)
+print "member?" , u1.is_member(g2)
 # print u1.groups.all()
 # print Group.query.all()
 

@@ -1,5 +1,3 @@
 todo:
 
-add group
-add self to group
 add user to group
