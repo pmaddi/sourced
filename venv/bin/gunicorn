@@ -1,0 +1,9 @@
+#!/Users/Pranav/Documents/Semester_2014_S/sourced/site/venv/bin/python
+# EASY-INSTALL-ENTRY-SCRIPT: 'gunicorn==18.0','console_scripts','gunicorn'
+__requires__ = 'gunicorn==18.0'
+import sys
+from pkg_resources import load_entry_point
+
+sys.exit(
+   load_entry_point('gunicorn==18.0', 'console_scripts', 'gunicorn')()
+)

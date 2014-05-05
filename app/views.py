@@ -7,6 +7,8 @@ import hashlib
 from datetime import datetime
 import urllib, cStringIO
 from bs4 import BeautifulSoup
+from config import WHOOSH_ENABLED
+
 
 def getsize(url):
 	try:
@@ -68,7 +70,6 @@ def before_request():
 		g.user.last_seen = datetime.utcnow()
 		db.session.add(g.user)
 		db.session.commit()
-
 
 @app.route('/', methods = ['GET','POST'])
 @app.route('/index', methods = ['GET','POST'])

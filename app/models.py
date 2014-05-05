@@ -2,6 +2,11 @@ from app import db
 from passlib.apps import custom_app_context as pwd_context
 from datetime import datetime
 
+from config import WHOOSH_ENABLED
+
+# if WHOOSH_ENABLED:
+#     import flask.ext.whooshalchemy as whooshalchemy
+#     whooshalchemy.whoosh_index(app, Post)
 
 ROLE_USER = 0
 ROLE_ADMIN = 1
@@ -69,7 +74,7 @@ class Group(db.Model):
 	id = db.Column(db.Integer, primary_key = True)
 	group_type = db.Column(db.SmallInteger, default = SUB_GROUP)
 	name = db.Column(db.String(64), unique = True)
-	
+
 	def members(self):
 		return User.query.join(groups, (groups.c.user_id == User.id)).filter(groups.c.group_id == self.id).all()
 	def posts(self):
